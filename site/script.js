@@ -15,8 +15,14 @@ fetch('moviedata.json')
         'oscar':movie.oscar
       })));
       console.log(datafilm)
+
+      
+
+
     }
   )
+
+
 
 
 

@@ -9,6 +9,27 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <div id="graph"></div>
+    
+        <svg width="90vw" height="80vh" viewbox="0 -480 540 540" preserveAspectRatio= "xMidYMid meet">
+            <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5"
+                        markerWidth="3" markerHeight="3" stroke="black" orient="auto" >
+                        <path d="M 0 0 L 10 5 L 0 10 z" />
+                </marker>
+            </defs>
+
+         
+            <rect x="0" y="-200" width="1000" height="200" fill="yellow"/>
+
+            <g id="dessin"></g>
+
+            <line x1="0" x2="0" y1="10" y2="-100" stroke="black" stroke-width="1"marker-end="url(#arrow)"/>
+            <line x1="-10" x2="500" y1="0" y2="0" stroke="black" stroke-width="1" marker-end="url(#arrow)"/>
+
+
+
+
+        </svg>
+    
 </body>
 </html>
