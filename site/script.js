@@ -1,26 +1,26 @@
 fetch('moviedata.json')
   .then((response) => response.json())
   .then(function (moviedata) {
-      let annees = [...new Set(moviedata.map(movie => movie.year))];
-      console.log(annees);
+    let annees = [...new Set(moviedata.map(movie => movie.year))];
+    console.log(annees);
 
-      let studios = [...new Set(moviedata.map(movie => movie.studio))];
-      console.log(studios)
+    let studios = [...new Set(moviedata.map(movie => movie.studio))];
+    console.log(studios)
 
-      let datafilm = [];
-      let filmpush = new Object(moviedata.map(movie => datafilm.push({
-        'titre':movie.title,
-        'x':movie.year,
-        'y':movie.rating,
-        'oscar':movie.oscar
-      })));
-      console.log(datafilm)
+    let datafilm = [];
+    let filmpush = new Object(moviedata.map(movie => datafilm.push({
+      'titre': movie.title,
+      'x': movie.year,
+      'y': movie.rating,
+      'oscar': movie.oscar
+    })));
+    console.log(datafilm)
 
-      
+    
 
 
-    }
-  )
+
+  })
 
 
 
@@ -28,9 +28,9 @@ fetch('moviedata.json')
 
 
 //   // set the dimensions and margins of the graph
-// var margin = {top: 10, right: 30, bottom: 30, left: 60},
-// width = 460 - margin.left - margin.right,
-// height = 400 - margin.top - margin.bottom;
+// var margin = {top: 20, right: 20, bottom: 20, left: 20},
+// width = 960 - margin.left - margin.right,
+// height = 500 - margin.top - margin.bottom;
 
 // // append the svg object to the body of the page
 // var svg = d3.select("#graph")

@@ -5,7 +5,18 @@
 body {
     margin: 0;
     width: 100%;
-    display: flex;
-    flex-direction: center;
-    align-items: center;
+}
+
+
+svg {
+    display: block;
+    margin: auto;
+}
+
+@media screen and (min-width: 850px){
+svg {
+    height:100vmin;
+    width:130vmin;
+
+}
 }
