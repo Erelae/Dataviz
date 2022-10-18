@@ -4,19 +4,21 @@
 
 body {
     margin: 0;
-    width: 100%;
 }
 
-
-svg {
+#chart {
     display: block;
     margin: auto;
+    margin-top: 40px;
+    width: 80%;
+}
+  
+.selection {
+    fill: none;
 }
 
-@media screen and (min-width: 850px){
-svg {
-    height:100vmin;
-    width:130vmin;
+.tick {
+    font-size: 0.5rem;
+}
 
-}
-}
+

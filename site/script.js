@@ -1,87 +1,119 @@
+
+//Récupération des données du json
 fetch('moviedata.json')
   .then((response) => response.json())
   .then(function (moviedata) {
+
+    //Collecte des données à utiliser
     let annees = [...new Set(moviedata.map(movie => movie.year))];
+    annees.push(2022, 2023);
     console.log(annees);
+    
+    //------Fonction de couleur random à attribuer à chaque studio
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
 
+    //------Collecte des studios et ajout des couleurs dans objects
     let studios = [...new Set(moviedata.map(movie => movie.studio))];
-    console.log(studios)
+    let datastudios = [];
+    let colorpush = new Object(studios.map(c => datastudios.push({
+      'studio': c,
+      'color': getRandomColor()
+    })));
+    console.log(datastudios);
 
-    let datafilm = [];
-    let filmpush = new Object(moviedata.map(movie => datafilm.push({
+    //------Collecte des films et leurs données
+    let data = [];
+    let filmpush = new Object(moviedata.map(movie => data.push({
       'titre': movie.title,
-      'x': movie.year,
-      'y': movie.rating,
+      'year': movie.year,
+      'popularity': movie.rating,
       'oscar': movie.oscar
     })));
-    console.log(datafilm)
+    console.log(data);
+  
+  //Création du chart à vue générale
+  //------Création du svg dans la div, viewbox pour responsive
+  const svg = d3
+    .select("#chart")
+    .append("svg")
+    .attr("viewBox", "0 -10 600 310");
+  
+  //------Paramètres des margin
+  const strokeWidth = 1;
+  const margin = { top: 0, bottom: 20, left: 30, right: 20 };
 
+  //------Création du groupe svg pour faire le chart
+  const chart = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},0)`);
+  
+  //------Dimensions à utiliser pour délimiter les axes dans le chart
+  const width = 600 - margin.left - margin.right;
+  const height = 300 - margin.top - margin.bottom;
+
+  const grp = chart
+    .append("g")
+    .attr("transform", `translate(-${margin.left},-${margin.top})`);
+  
+  //Ajout des échelles des axes
+  const yScale = d3
+    .scaleLinear()
+    .range([height, 0])
+    .domain([5.5, 10]);
+    
+  const xScale = d3
+    .scaleLinear()
+    .range([0, width])
+    .domain(d3.extent(annees));
+
+  //Ajout de l'axe x
+  chart
+    .append("g")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(xScale).ticks(annees.length).tickFormat(d3.format("d")));
+  
+  //Ajout de l'axe y
+  chart
+    .append("g")
+    .attr("transform", `translate(0, 0)`)
+    .call(d3.axisLeft(yScale));
+  
     
 
+  //Ajout barres de données
+  grp
+  .append("rect")
+  .attr("transform",`translate(${margin.left},0)`)
+  .datum(data)
+  .style("fill", "lightblue")
+  .attr("width", d.rating - 5.5)
+  .attr("height", )
 
+    //PARTIE HS POUR UN CHART AREA
+//   const area = d3
+//     .area()
+//     .x(d => xScale(d.year))
+//     .y0(height)
+//     .y1(d => yScale(d.popularity));
 
-  })
+      // Add area
+//   grp
+//     .append("path")
+//     .attr("transform", `translate(${margin.left},0)`)
+//     .datum(data)
+//     .style("fill", "lightblue")
+//     .attr("stroke", "steelblue")
+//     .attr("stroke-linejoin", "round")
+//     .attr("stroke-linecap", "round")
+//     .attr("stroke-width", strokeWidth)
+//     .attr("d", area);
+  
 
-
-
-
-
-
-//   // set the dimensions and margins of the graph
-// var margin = {top: 20, right: 20, bottom: 20, left: 20},
-// width = 960 - margin.left - margin.right,
-// height = 500 - margin.top - margin.bottom;
-
-// // append the svg object to the body of the page
-// var svg = d3.select("#graph")
-// .append("svg")
-// .attr("width", width + margin.left + margin.right)
-// .attr("height", height + margin.top + margin.bottom)
-// .append("g")
-// .attr("transform",
-//       "translate(" + margin.left + "," + margin.top + ")");
-
-// //Read the data
-// d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/connectedscatter.csv",
-// // When reading the csv, I must format variables:
-// function(d){
-// return { date : d3.timeParse("%Y-%m-%d")(d.date), value : d.value }
-// },
-
-// // Now I can use this dataset:
-// function(data) {
-// // Add X axis --> it is a date format
-// var x = d3.scaleTime()
-//   .domain(d3.extent(data, function(d) { return d.date; }))
-//   .range([ 0, width ]);
-// svg.append("g")
-//   .attr("transform", "translate(0," + height + ")")
-//   .call(d3.axisBottom(x));
-// // Add Y axis
-// var y = d3.scaleLinear()
-//   .domain( [8000, 9200])
-//   .range([ height, 0 ]);
-// svg.append("g")
-//   .call(d3.axisLeft(y));
-// // Add the line
-// svg.append("path")
-//   .datum(data)
-//   .attr("fill", "none")
-//   .attr("stroke", "#69b3a2")
-//   .attr("stroke-width", 1.5)
-//   .attr("d", d3.line()
-//     .x(function(d) { return x(d.date) })
-//     .y(function(d) { return y(d.value) })
-//     )
-// // Add the points
-// svg
-//   .append("g")
-//   .selectAll("dot")
-//   .data(data)
-//   .enter()
-//   .append("circle")
-//     .attr("cx", function(d) { return x(d.date) } )
-//     .attr("cy", function(d) { return y(d.value) } )
-//     .attr("r", 5)
-//     .attr("fill", "#69b3a2")
-// })
+})
